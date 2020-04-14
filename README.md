@@ -39,3 +39,6 @@ Please cite these codes as:
 </b>
 
 --------------------------------------------------------
+
+ <b> Note! In some cases we have experienced problems working with the "asbio" package (https://cran.r-project.org/web/packages/asbio/asbio.pdf). From this package a single function is used, therefore if the analyst experiences problems with installing or loading this package, we have included this single function that can be included within the code. Please note that all credit for this function goes to the authros of this package and is not intelectual property of the corresponding author.
+</b>
