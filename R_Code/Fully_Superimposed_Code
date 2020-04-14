@@ -48,8 +48,7 @@ A3_mshape<-data.frame(mshape(A3_GPA$coords))
 Wolf_mshape<-data.frame(mshape(Wolf_GPA$coords))
 Dog_mshape<-data.frame(mshape(Dog_GPA$coords))
 
-# Automate procrustes data collection --------------
-
+# Automate procrustes data collection
 
 data<-tibble(label = character(), Landmark = factor(), Sample = factor(), Animal = factor(),
              x = numeric(), y = numeric(), z = numeric())
@@ -170,7 +169,6 @@ for (i in 1:length(ALM)){
   xrange<-c(min(LM$y),max(LM$y))
   yrange<-c(min(LM$z),max(LM$z))
   x<-ppp(LM$x, LM$z, xrange, yrange) # Creating Spatial Window
-  #plot(LM$x,LM$z) # Plotting map (note - scale is not accurate)
   print(quadrat.test(x,5,5)$p.value) # p<0.05 - distribuci�n inhomogeneo
 }; rm(LM, Landmark_n, xrange, yrange, x)
 for (i in 1:length(ALM)){
@@ -179,7 +177,6 @@ for (i in 1:length(ALM)){
   xrange<-c(min(LM$y),max(LM$y))
   yrange<-c(min(LM$z),max(LM$z))
   x<-ppp(LM$y, LM$z, xrange, yrange) # Creating Spatial Window
-  #plot(LM$x,LM$z) # Plotting map (note - scale is not accurate)
   print(quadrat.test(x,5,5)$statistic[[1]])
 }; rm(LM, Landmark_n, xrange, yrange, x)
 
@@ -192,7 +189,6 @@ for (i in 1:length(ALM)){
   xrange<-c(min(LM$x),max(LM$x))
   yrange<-c(min(LM$z),max(LM$z))
   x<-ppp(LM$x, LM$z, xrange, yrange) # Creating Spatial Window
-  #plot(LM$x,LM$z) # Plotting map (note - scale is not accurate)
   print(quadrat.test(x,5,5)$p.value) # p<0.05 - distribuci�n inhomogeneo
 }; rm(LM, Landmark_n, xrange, yrange, x)
 for (i in 1:length(ALM)){
@@ -201,7 +197,6 @@ for (i in 1:length(ALM)){
   xrange<-c(min(LM$x),max(LM$x))
   yrange<-c(min(LM$z),max(LM$z))
   x<-ppp(LM$x, LM$z, xrange, yrange) # Creating Spatial Window
-  #plot(LM$x,LM$z) # Plotting map (note - scale is not accurate)
   print(quadrat.test(x,5,5)$statistic[[1]])
 }; rm(LM, Landmark_n, xrange, yrange, x)
 
@@ -1719,8 +1714,6 @@ op<-par(mfrow = c(1,2))
 boxplot(proc_dist~animal, data = Proc_distances); boxplot(proc_dist~sample, data = Proc_distances)
 par(op)
 
-# Repeatability Measure --------------
-
 # Repeatability measure - proportion of variance due to true variation
 
 ((sum(as.matrix(tibble(s2a = Proc_A1$proc_dist^2))))/
@@ -1809,11 +1802,6 @@ compare<-rbind(Proc_A3, Proc_A1)
 kruskal.test(proc_dist~sample, data = compare)
 
 par(mfrow = c(1,1))
-#distances_for_plot<-tibble(label = Proc_distances_wolf$label, distance = Proc_distances_wolf$proc_dist) %>%
-#  as.data.frame(); rownames(distances_for_plot)<-distances_for_plot$label; distances_for_plot<-distances_for_plot[-c(1)]
-#agn<-agnes(distances_for_plot, method = "average")
-#plot(agn, which.plot = 2, cex = 0.65)
-
 boxplot(proc_dist~sample, data = Proc_distances_wolf)
 
 # Dog -------------------------
@@ -1884,11 +1872,6 @@ compare<-rbind(Proc_A1, Proc_A2)
 kruskal.test(proc_dist~sample, data = compare)
 
 par(mfrow = c(1,1))
-#distances_for_plot<-tibble(label = Proc_distances_Dog$label, distance = Proc_distances_Dog$proc_dist) %>%
-#  as.data.frame(); rownames(distances_for_plot)<-distances_for_plot$label; distances_for_plot<-distances_for_plot[-c(1)]
-#agn<-agnes(distances_for_plot, method = "average")
-#plot(agn, which.plot = 2, cex = 0.65)
-
 boxplot(proc_dist~sample, data = Proc_distances_Dog)
 
 # Indiviual observer ------------------------
@@ -1982,5 +1965,4 @@ sqrt(r.bw(test)$"S.xx"[1])
 kruskal.test(proc_dist~animal, data = A2_distances)
 
 boxplot(proc_dist~animal, data = A2_distances)
-
 
