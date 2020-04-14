@@ -14,10 +14,14 @@ print("Imported Packages:", "\nNumpy: {}.".format(np.__version__),
       "\nSciPy: {}.".format(scipy.__version__),
       "\nScikit-learn: {}.".format(sklearn.__version__),
       "\nPandas: {}.".format(pd.__version__))
-      
+
+# set internal matplotlib parameters
+
 plt.style.use("ggplot")
 plt.rcParams["figure.figsize"] = (16,12)
 plt.rcParams["axes.facecolor"] = "None"
+
+# load data
 
 os.chdir("C:/Users/ladc1/Desktop/PhD/Methodological Research")
 data = pd.read_csv("proc_coords.txt", sep = "\t")
