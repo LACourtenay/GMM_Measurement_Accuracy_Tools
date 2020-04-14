@@ -40,5 +40,5 @@ Please cite these codes as:
 
 --------------------------------------------------------
 
- <b> Note! In some cases we have experienced problems working with the "asbio" package (https://cran.r-project.org/web/packages/asbio/asbio.pdf). From this package a single function is used, therefore if the analyst experiences problems with installing or loading this package, we have included this single function so that it can be included within the code. Please note that all credit for this function goes to the authros of this package and is not intelectual property of the corresponding author.
+ <b> Note! In some cases we have experienced problems working with the "asbio" R package (https://cran.r-project.org/web/packages/asbio/asbio.pdf). From this package a single function is used, therefore if the analyst experiences problems with installing or loading this package, we have included this single function in the R folder. The analyst can simply copy and paste this function into their R code for it to work. Please note that all credit for this function goes to the authros of this package and is not intelectual property of the corresponding author.
 </b>
