@@ -175,3 +175,8 @@ plt.scatter(raw_data[:, 0], raw_data[:, 1], c = y_pred)
 plt.title('Estimated number of clusters ({}) and noise points ({})'.format(n_clusters_, n_noise_))
 plt.axis("off")
 plt.show()
+
+# Data you wish to plot in r can be extracted via:
+
+np.savetxt("data_to_plot.txt",
+           np.stack((raw_data[:,0],raw_data[:,1],labels), axis = 1))
