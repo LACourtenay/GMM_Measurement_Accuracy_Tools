@@ -41,12 +41,12 @@ Dog_GPA<-gpagen(Dog$coords, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
 
 raw_mshape<-data.frame(mshape(a$coords))
 
-absolute_mshape<-data.frame(mshape(GPA$coords))
-A1_mshape<-data.frame(mshape(A1_GPA$coords))
-A2_mshape<-data.frame(mshape(A2_GPA$coords))
-A3_mshape<-data.frame(mshape(A3_GPA$coords))
-Wolf_mshape<-data.frame(mshape(Wolf_GPA$coords))
-Dog_mshape<-data.frame(mshape(Dog_GPA$coords))
+absolute_mshape<-data.frame(mshape(GPA$coords));names(absolute_mshape)[1]<-"X";names(absolute_mshape)[2]<-"Y";names(absolute_mshape)[3]<-"Z"
+A1_mshape<-data.frame(mshape(A1_GPA$coords));names(A1_mshape)[1]<-"X";names(A1_mshape)[2]<-"Y";names(A1_mshape)[3]<-"Z"
+A2_mshape<-data.frame(mshape(A2_GPA$coords));names(A2_mshape)[1]<-"X";names(A2_mshape)[2]<-"Y";names(A2_mshape)[3]<-"Z"
+A3_mshape<-data.frame(mshape(A3_GPA$coords));names(A3_mshape)[1]<-"X";names(A3_mshape)[2]<-"Y";names(A3_mshape)[3]<-"Z"
+Wolf_mshape<-data.frame(mshape(Wolf_GPA$coords));names(Wolf_mshape)[1]<-"X";names(Wolf_mshape)[2]<-"Y";names(Wolf_mshape)[3]<-"Z"
+Dog_mshape<-data.frame(mshape(Dog_GPA$coords));names(Dog_mshape)[1]<-"X";names(Dog_mshape)[2]<-"Y";names(Dog_mshape)[3]<-"Z"
 
 # Automate procrustes data collection
 
@@ -312,11 +312,12 @@ shapiro.test(A1_error_distances$distance)
 
 # NMAD and BWMV Calculations
 
-A1_landmark_errors<-tibble(Landmark = factor(), NMAD = numeric(), BWMV = numeric())
+A1_landmark_errors<-tibble(Landmark = factor(), Median = numeric(), NMAD = numeric(), BWMV = numeric())
 for (i in 1:length(levels(A1_error_distances$Landmark))){
   A1_landmark_error<-as.tibble(A1_error_distances) %>% filter(Landmark == paste("LM", i, sep = ""))
   A1_landmark_errors<-add_row(A1_landmark_errors,
                                Landmark = paste("LM", i, sep = ""),
+                               Median = median(A1_landmark_error$distance),
                                NMAD = mad(A1_landmark_error$distance, constant = 1.4826),
                                BWMV = sqrt(r.bw(A1_landmark_error$distance)$"S.xx"[1]))
 }; rm(A1_landmark_error); A1_landmark_errors
@@ -432,11 +433,12 @@ shapiro.test(A2_error_distances$distance)
 
 # NMAD and BWMV Calculations
 
-A2_landmark_errors<-tibble(Landmark = factor(), NMAD = numeric(), BWMV = numeric())
+A2_landmark_errors<-tibble(Landmark = factor(), Median = numeric(), NMAD = numeric(), BWMV = numeric())
 for (i in 1:length(levels(A2_error_distances$Landmark))){
   A2_landmark_error<-as.tibble(A2_error_distances) %>% filter(Landmark == paste("LM", i, sep = ""))
   A2_landmark_errors<-add_row(A2_landmark_errors,
                                 Landmark = paste("LM", i, sep = ""),
+                                Median = median(A2_landmark_error$distance),
                                 NMAD = mad(A2_landmark_error$distance, constant = 1.4826),
                                 BWMV = sqrt(r.bw(A2_landmark_error$distance)$"S.xx"[1]))
 }; rm(A2_landmark_error); A2_landmark_errors
@@ -552,11 +554,12 @@ shapiro.test(A3_error_distances$distance)
 
 # NMAD and BWMV Calculations
 
-A3_landmark_errors<-tibble(Landmark = factor(), NMAD = numeric(), BWMV = numeric())
+A3_landmark_errors<-tibble(Landmark = factor(), Median = numeric(), NMAD = numeric(), BWMV = numeric())
 for (i in 1:length(levels(A3_error_distances$Landmark))){
   A3_landmark_error<-as.tibble(A3_error_distances) %>% filter(Landmark == paste("LM", i, sep = ""))
   A3_landmark_errors<-add_row(A3_landmark_errors,
                                Landmark = paste("LM", i, sep = ""),
+                               Median = median(A3_landmark_error$distance),
                                NMAD = mad(A3_landmark_error$distance, constant = 1.4826),
                                BWMV = sqrt(r.bw(A3_landmark_error$distance)$"S.xx"[1]))
 }; rm(A3_landmark_error); A3_landmark_errors
@@ -818,16 +821,26 @@ for (i in c("A1", "A2", "A3")){
 
 # NMAD and BWMV Calculations
 
-interanalyst_landmark_errors<-tibble(Landmark = factor(), overall_NMAD = numeric(), overall_BWMV = numeric(),
+interanalyst_landmark_errors<-tibble(Landmark = factor(),
+                                     overall_median = numeric(),
+                                     overall_NMAD = numeric(), overall_BWMV = numeric(),
+                                     A3_median = numeric(),
                                      A3_NMAD = numeric(), A3_BWMV = numeric(),
+                                     A1_median = numeric(),
                                      A1_NMAD = numeric(), A1_BWMV = numeric(),
+                                     A2_median = numeric(),
                                      A2_NMAD = numeric(), A2_BWMV = numeric())
 for (i in 1:length(levels(interanalyst_errors$Landmark))){
   interanalyst_landmark_error<-as.tibble(interanalyst_errors) %>% filter(Landmark == paste("LM", i, sep = ""))
   interanalyst_landmark_errors<-add_row(interanalyst_landmark_errors,
                                         Landmark = paste("LM", i, sep = ""),
+                                        overall_median = median(interanalyst_landmark_error$distance),
                                         overall_NMAD = mad(interanalyst_landmark_error$distance, constant = 1.4826),
                                         overall_BWMV = sqrt(r.bw(interanalyst_landmark_error$distance)$"S.xx"[1]),
+                                        A3_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A3") %>%
+                                            select(distance))),
                                         A3_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A3") %>%
@@ -837,6 +850,10 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A3") %>%
                                             select(distance)))$"S.xx"[1]),
+                                        A1_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A1") %>%
+                                            select(distance))),
                                         A1_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A1") %>%
@@ -846,6 +863,10 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A1") %>%
                                             select(distance)))$"S.xx"[1]),
+                                        A2_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A2") %>%
+                                            select(distance))),
                                         A2_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A2") %>%
@@ -855,7 +876,7 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A2") %>%
                                             select(distance)))$"S.xx"[1]))
-}; rm(interanalyst_landmark_error); interanalyst_landmark_errors
+  }; rm(interanalyst_landmark_error); interanalyst_landmark_errors
 
 # Comparisons According to Animals -----------------------------
 
@@ -1067,7 +1088,7 @@ A3_inter_error_distances<-tibble(Landmark = Wolf_data$Landmark, Animal = Wolf_da
   )); interanalyst_errors<-full_join(A2_inter_error_distances,
                                      A3_inter_error_distances); interanalyst_errors<-full_join(interanalyst_errors,
                                                                                                 A1_inter_error_distances)
-#rm(A2_inter_error_distances, A3_inter_error_distances, A1_inter_error_distances)
+rm(A2_inter_error_distances, A3_inter_error_distances, A1_inter_error_distances)
 
 # normality plots
 
@@ -1119,16 +1140,26 @@ for (i in c("A1", "A2", "A3")){
 
 # NMAD and BWMV Calculations
 
-interanalyst_landmark_errors<-tibble(Landmark = factor(), overall_NMAD = numeric(), overall_BWMV = numeric(),
+interanalyst_landmark_errors<-tibble(Landmark = factor(),
+                                     overall_median = numeric(),
+                                     overall_NMAD = numeric(), overall_BWMV = numeric(),
+                                     A3_median = numeric(),
                                      A3_NMAD = numeric(), A3_BWMV = numeric(),
+                                     A1_median = numeric(),
                                      A1_NMAD = numeric(), A1_BWMV = numeric(),
+                                     A2_median = numeric(),
                                      A2_NMAD = numeric(), A2_BWMV = numeric())
 for (i in 1:length(levels(interanalyst_errors$Landmark))){
   interanalyst_landmark_error<-as.tibble(interanalyst_errors) %>% filter(Landmark == paste("LM", i, sep = ""))
   interanalyst_landmark_errors<-add_row(interanalyst_landmark_errors,
                                         Landmark = paste("LM", i, sep = ""),
+                                        overall_median = median(interanalyst_landmark_error$distance),
                                         overall_NMAD = mad(interanalyst_landmark_error$distance, constant = 1.4826),
                                         overall_BWMV = sqrt(r.bw(interanalyst_landmark_error$distance)$"S.xx"[1]),
+                                        A3_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A3") %>%
+                                            select(distance))),
                                         A3_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A3") %>%
@@ -1138,6 +1169,10 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A3") %>%
                                             select(distance)))$"S.xx"[1]),
+                                        A1_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A1") %>%
+                                            select(distance))),
                                         A1_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A1") %>%
@@ -1147,6 +1182,10 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A1") %>%
                                             select(distance)))$"S.xx"[1]),
+                                        A2_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A2") %>%
+                                            select(distance))),
                                         A2_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A2") %>%
@@ -1416,16 +1455,26 @@ for (i in c("A1", "A2", "A3")){
 
 # NMAD and BWMV Calculations
 
-interanalyst_landmark_errors<-tibble(Landmark = factor(), overall_NMAD = numeric(), overall_BWMV = numeric(),
+interanalyst_landmark_errors<-tibble(Landmark = factor(),
+                                     overall_median = numeric(),
+                                     overall_NMAD = numeric(), overall_BWMV = numeric(),
+                                     A3_median = numeric(),
                                      A3_NMAD = numeric(), A3_BWMV = numeric(),
+                                     A1_median = numeric(),
                                      A1_NMAD = numeric(), A1_BWMV = numeric(),
+                                     A2_median = numeric(),
                                      A2_NMAD = numeric(), A2_BWMV = numeric())
 for (i in 1:length(levels(interanalyst_errors$Landmark))){
   interanalyst_landmark_error<-as.tibble(interanalyst_errors) %>% filter(Landmark == paste("LM", i, sep = ""))
   interanalyst_landmark_errors<-add_row(interanalyst_landmark_errors,
                                         Landmark = paste("LM", i, sep = ""),
+                                        overall_median = median(interanalyst_landmark_error$distance),
                                         overall_NMAD = mad(interanalyst_landmark_error$distance, constant = 1.4826),
                                         overall_BWMV = sqrt(r.bw(interanalyst_landmark_error$distance)$"S.xx"[1]),
+                                        A3_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A3") %>%
+                                            select(distance))),
                                         A3_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A3") %>%
@@ -1435,6 +1484,10 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A3") %>%
                                             select(distance)))$"S.xx"[1]),
+                                        A1_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A1") %>%
+                                            select(distance))),
                                         A1_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A1") %>%
@@ -1444,6 +1497,10 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A1") %>%
                                             select(distance)))$"S.xx"[1]),
+                                        A2_median = median(as.matrix(
+                                          as.tibble(interanalyst_landmark_error) %>%
+                                            filter(Sample == "A2") %>%
+                                            select(distance))),
                                         A2_NMAD = mad(as.matrix(
                                           as.tibble(interanalyst_landmark_error) %>%
                                             filter(Sample == "A2") %>%
@@ -1663,6 +1720,7 @@ Proc_A3<-analyst$A3
 test<-Proc_A2$proc_dist
 shapiro.test(test)
 mean(test)
+median(test)
 sd(test)
 skewness(test)
 kurtosis(test, type = 1)
@@ -1762,6 +1820,7 @@ Proc_A3<-analyst$A3
 test<-Proc_A1$proc_dist
 shapiro.test(test)
 mean(test)
+median(test)
 sd(test)
 skewness(test)
 kurtosis(test, type = 1)
@@ -1832,6 +1891,7 @@ Proc_A3<-analyst$A3
 test<-Proc_A3$proc_dist
 shapiro.test(test)
 mean(test)
+median(test)
 sd(test)
 skewness(test)
 kurtosis(test, type = 1)
@@ -1926,6 +1986,7 @@ test<-Proc_Wolf$proc_dist
 shapiro.test(test)
 mean(test)
 sd(test)
+median(test)
 skewness(test)
 kurtosis(test, type = 1)
 mad(test, constant = 1.4826)
@@ -1957,6 +2018,7 @@ shapiro.test(test)
 mean(test)
 sd(test)
 skewness(test)
+median(test)
 kurtosis(test, type = 1)
 mad(test, constant = 1.4826)
 sqrt(r.bw(test)$"S.xx"[1])
