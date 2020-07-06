@@ -64,7 +64,7 @@ for (i in 1:length(a$labels)){
   }
 }; data<-as.tibble(data) %>%
   mutate(label = if_else(grepl("Wolf", label) == TRUE,
-                               substr(label, 1, 11), substr(label, 1, 12))); data$label<-factor(data$label); rm(sep, LM)
+                               substr(label, 1, 11), substr(label, 1, 10))); data$label<-factor(data$label); rm(sep, LM)
 
 Wolf_data<-tibble(label = character(), Landmark = factor(), Sample = factor(), Animal = factor(),
                   x = numeric(), y = numeric(), z = numeric())
@@ -80,7 +80,7 @@ for (i in 1:length(Wolf$labels)){
   }
 }; Wolf_data<-as.tibble(Wolf_data) %>%
   mutate(label = if_else(grepl("Wolf", label) == TRUE,
-                         substr(label, 1, 10), substr(label, 1, 11))); Wolf_data$label<-factor(Wolf_data$label); rm(sep, LM)
+                         substr(label, 1, 11), substr(label, 1, 10))); Wolf_data$label<-factor(Wolf_data$label); rm(sep, LM)
 
 Dog_data<-tibble(label = character(), Landmark = factor(), Sample = factor(), Animal = factor(),
                  x = numeric(), y = numeric(), z = numeric())
