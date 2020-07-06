@@ -41,7 +41,7 @@ for (i in 1:length(a$labels)){
   }
 }; raw_data<-as.tibble(raw_data) %>%
   mutate(label = if_else(grepl("Wolf", label) == TRUE,
-                         substr(label, 1, 11), substr(label, 1, 12))); raw_data$label<-factor(raw_data$label); rm(sep, LM)
+                         substr(label, 1, 10), substr(label, 1, 11))); raw_data$label<-factor(raw_data$label); rm(sep, LM)
 distances<-tibble(label = character(), Landmark = factor(), Animal = factor(),
                   A1_x = numeric(), A1_y = numeric(), A1_z = numeric(),
                   A3_x = numeric(), A3_y = numeric(), A3_z = numeric(),
