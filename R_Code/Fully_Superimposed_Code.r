@@ -202,7 +202,431 @@ for (i in 1:length(ALM)){
 
 #
 
+# Distribution Analysis ----------------------------------------
+
+# Create plots of distributions
+
+Landmark<-split(data, data$Landmark)
+for (i in 1:length(levels(data$Landmark))){
+  LM_number<-paste("LM", i, sep ="")
+  Landmark_dist<-Landmark[[LM_number]]
+  landmark_plot<-ggplot(Landmark_dist, aes(x = x, y = y, colour = Sample)) +
+    geom_point(stat = "identity", size = 1.5) +
+    stat_ellipse(size = 0.5) +
+    scale_color_manual(values = c("A3" = "BA3k", "A1" = "Red", "A2" = "Blue")) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_rect(fill = "transparent"),
+      plot.background = element_rect(fill = "transparent", colour = "NA"),
+      plot.margin = unit(c(1,1,1,1), "cm"),
+      plot.title = element_blank(),
+      plot.subtitle = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.border = element_rect(colour = "NA", fill = "transparent"),
+      legend.position = "none"
+    ) +
+    coord_cartesian(xlim = c(min(data$x)-0.01, max(data$x)+0.01),
+                    ylim = c(min(data$y)-0.01, max(data$y)+0.01))
+  ggsave(paste(directory, "\\Plots of Distributions\\",
+               LM_number, ".svg", sep = ""), plot = landmark_plot,
+         device = "svg",
+         width = 50,
+         height = 50,
+         units = "cm",
+         dpi = 1000,
+         bg = "transparent")
+}
+
+# Calculate Significance of Variations in Distribution
+
+LM_number<-"LM17"
+Landmark_dist<-Landmark[[LM_number]]; Landmark_dist_coords<-as.matrix(as.tibble(Landmark_dist) %>% select(x, y, z))
+pairwise.perm.manova(Landmark_dist_coords, Landmark_dist$Sample,
+                     test = c("Wilks"), nperm = 999,
+                     progress = TRUE, p.method = "none")
+
+# Animal
+
+# Wolf
+
+Landmark<-split(Wolf_data, Wolf_data$Landmark)
+for (i in 1:length(levels(Wolf_data$Landmark))){
+  LM_number<-paste("LM", i, sep ="")
+  Landmark_dist<-Landmark[[LM_number]]
+  landmark_plot<-ggplot(Landmark_dist, aes(x = x, y = y, colour = Sample)) +
+    geom_point(stat = "identity", size = 1.5) +
+    stat_ellipse(size = 0.5) +
+    scale_color_manual(values = c("A3" = "BA3k", "A1" = "Red", "A2" = "Blue")) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_rect(fill = "transparent"),
+      plot.background = element_rect(fill = "transparent", colour = "NA"),
+      plot.margin = unit(c(1,1,1,1), "cm"),
+      plot.title = element_blank(),
+      plot.subtitle = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.border = element_rect(colour = "NA", fill = "transparent"),
+      legend.position = "none"
+    ) +
+    coord_cartesian(xlim = c(min(Wolf_data$x)-0.01, max(Wolf_data$x)+0.01),
+                    ylim = c(min(Wolf_data$y)-0.01, max(Wolf_data$y)+0.01))
+  ggsave(paste(directory, "\\Plots of Distributions\\",
+               LM_number, ".svg", sep = ""), plot = landmark_plot,
+         device = "svg",
+         width = 50,
+         height = 50,
+         units = "cm",
+         dpi = 1000,
+         bg = "transparent")
+}
+
+# Multivariate Analyses
+
+LM_number<-"LM17"
+Landmark_dist<-Landmark[[LM_number]]; Landmark_dist_coords<-as.matrix(as.tibble(Landmark_dist) %>% select(x, y, z))
+pairwise.perm.manova(Landmark_dist_coords, Landmark_dist$Sample,
+                     test = c("Wilks"), nperm = 999,
+                     progress = TRUE, p.method = "none")
+
+# Dog
+
+Landmark<-split(Dog_data, Dog_data$Landmark)
+for (i in 1:length(levels(Dog_data$Landmark))){
+  LM_number<-paste("LM", i, sep ="")
+  Landmark_dist<-Landmark[[LM_number]]
+  landmark_plot<-ggplot(Landmark_dist, aes(x = x, y = y, colour = Sample)) +
+    geom_point(stat = "identity", size = 1.5) +
+    stat_ellipse(size = 0.5) +
+    scale_color_manual(values = c("A3" = "BA3k", "A1" = "Red", "A2" = "Blue")) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_rect(fill = "transparent"),
+      plot.background = element_rect(fill = "transparent", colour = "NA"),
+      plot.margin = unit(c(1,1,1,1), "cm"),
+      plot.title = element_blank(),
+      plot.subtitle = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.border = element_rect(colour = "NA", fill = "transparent"),
+      legend.position = "none"
+    ) +
+    coord_cartesian(xlim = c(min(Dog_data$x)-0.01, max(Dog_data$x)+0.01),
+                    ylim = c(min(Dog_data$y)-0.01, max(Dog_data$y)+0.01))
+  ggsave(paste(directory, "\\Plots of Distributions\\",
+               LM_number, ".svg", sep = ""), plot = landmark_plot,
+         device = "svg",
+         width = 50,
+         height = 50,
+         units = "cm",
+         dpi = 1000,
+         bg = "transparent")
+}
+
+# Multivariate Analyses
+
+LM_number<-"LM17"
+Landmark_dist<-Landmark[[LM_number]]; Landmark_dist_coords<-as.matrix(as.tibble(Landmark_dist) %>% select(x, y, z))
+pairwise.perm.manova(Landmark_dist_coords, Landmark_dist$Sample,
+                     test = c("Wilks"), nperm = 999,
+                     progress = TRUE, p.method = "none")
+
+#
+
+# Procrustes Distances ##########################
+
+# Analyst -----------------------------------
+
+Proc_dist<-ShapeDist(shapes = GPA$coords, reference = mshape(GPA$coords))
+Proc_distances<-tibble(label = character(), sample = factor(), animal = factor(), proc_dist = numeric())
+for (i in 1:length(Proc_dist)) {
+  Proc_distances<-add_row(Proc_distances,
+                          label = rownames(a$labels)[i],
+                          sample = a$labels[i],
+                          animal = if_else(grepl("Wolf", label) == TRUE, "Wolf", "Dog"),
+                          proc_dist = Proc_dist[i])
+  }
+
+# Overall normality of procrustes distances
+
+op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
+hist(Proc_distances$proc_dist,
+     main = "Histogram of Procrustes Distances",
+     sub = if (
+       shapiro.test(Proc_distances$proc_dist)$`p.value` > 0.5
+       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
+         shapiro.test(Proc_distances$proc_dist)$`p.value` > 0.05 && shapiro.test(Proc_distances$proc_dist)$`p.value` < 0.5
+         ) {"Shapiro test: Guassian Distribution"} else if (
+           shapiro.test(Proc_distances$proc_dist)$`p.value` > 0.001 && shapiro.test(Proc_distances$proc_dist)$`p.value` < 0.05
+           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
+     col.sub = "red",
+     font.sub = 2,
+     col = "grey",
+     prob = TRUE,
+     xlab = "Procrustes Distances"
+     ); curve(dnorm(x,
+                    mean(Proc_distances$proc_dist),
+                    sd(Proc_distances$proc_dist)),
+              col = "blue",
+              lwd = 2,
+              add = TRUE); lines(density(Proc_distances$proc_dist),
+                                 col = "red",
+                                 lwd = 2); qqPlot(Proc_distances$proc_dist,
+                                                  envelope = 0.95, col.lines = "red",
+                                                  pch = 16, cex = 0.5,
+                                                  id = FALSE,
+                                                  main = "Procrustes Distances",
+                                                  ylab = "Actual Quantiles",
+                                                  xlab = "Theoretical Quantiles")
+
+par(op)
+shapiro.test(Proc_distances$proc_dist)
+
+# Proc dist normalities according to ... variables
+
+analyst<-split(Proc_distances, Proc_distances$sample)
+Proc_A1<-analyst$A1
+Proc_A2<-analyst$A2
+Proc_A3<-analyst$A3
+
+test<-Proc_A2$proc_dist
+shapiro.test(test)
+mean(test)
+median(test)
+sd(test)
+skewness(test)
+kurtosis(test, type = 1)
+mad(test, constant = 1.4826)
+sqrt(r.bw(test)$"S.xx"[1])
+
+op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
+hist(test,
+     main = "Histogram of Procrustes Distances",
+     sub = if (
+       shapiro.test(test)$`p.value` > 0.5
+       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
+         shapiro.test(test)$`p.value` > 0.05 && shapiro.test(test)$`p.value` < 0.5
+         ) {"Shapiro test: Guassian Distribution"} else if (
+           shapiro.test(test)$`p.value` > 0.001 && shapiro.test(test)$`p.value` < 0.05
+           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
+     col.sub = "red",
+     font.sub = 2,
+     col = "grey",
+     prob = TRUE,
+     xlab = "Procrustes Distances"
+     ); curve(dnorm(x,
+                    mean(test),
+                    sd(test)),
+              col = "blue",
+              lwd = 2,
+              add = TRUE); lines(density(test),
+                                 col = "red",
+                                 lwd = 2); qqPlot(test,
+                                                  envelope = 0.95, col.lines = "red",
+                                                  pch = 16, cex = 0.5,
+                                                  id = FALSE,
+                                                  main = "Procrustes Distances",
+                                                  ylab = "Actual Quantiles",
+                                                  xlab = "Theoretical Quantiles")
+par(op)
+
+compare<-rbind(Proc_A2, Proc_A3)
+kruskal.test(proc_dist~sample, data = compare)
+
+distances_for_plot<-tibble(label = Proc_distances$label, distance = Proc_distances$proc_dist) %>%
+  as.data.frame(); rownames(distances_for_plot)<-distances_for_plot$label; distances_for_plot<-distances_for_plot[-c(1)]
+agn<-agnes(distances_for_plot, method = "average")
+plot(agn, which.plot = 2, cex = 0.65, main = "UPGMA Tree")
+
+boxplot(proc_dist~sample*animal, data = Proc_distances, col =  c("red","blue","green"))
+
+op<-par(mfrow = c(1,2))
+boxplot(proc_dist~animal, data = Proc_distances); boxplot(proc_dist~sample, data = Proc_distances)
+par(op)
+
+# Repeatability measure - proportion of variance due to true variation
+
+((sum(as.matrix(tibble(s2a = Proc_A1$proc_dist^2))))/
+    (nrow(Proc_distances)-length(levels(Proc_distances$sample))))/
+  ((sum(as.matrix(tibble(s2a = Proc_distances$proc_dist^2))))/
+     (nrow(Proc_distances)-1))*100
+
+((sum(as.matrix(tibble(s2a = Proc_A2$proc_dist^2))))/
+    (nrow(Proc_distances)-length(levels(Proc_distances$sample))))/
+  ((sum(as.matrix(tibble(s2a = Proc_distances$proc_dist^2))))/
+     (nrow(Proc_distances)-1))*100
+
+((sum(as.matrix(tibble(s2a = Proc_A3$proc_dist^2))))/
+    (nrow(Proc_distances)-length(levels(Proc_distances$sample))))/
+  ((sum(as.matrix(tibble(s2a = Proc_distances$proc_dist^2))))/
+     (nrow(Proc_distances)-1))*100
+
+
+#
+
+# Only with wolves ---------------------------
+
+Proc_dist_wolf<-ShapeDist(shapes = Wolf_GPA$coords, reference = mshape(Wolf_GPA$coords))
+Proc_distances_wolf<-tibble(label = character(), sample = factor(), animal = factor(), proc_dist = numeric())
+for (i in 1:length(Proc_dist_wolf)) {
+  Proc_distances_wolf<-add_row(Proc_distances_wolf,
+                               label = rownames(Wolf$labels)[i],
+                               sample = Wolf$labels[i],
+                               animal = if_else(grepl("Wolf", label) == TRUE, "Wolf", "Dog"),
+                               proc_dist = Proc_dist_wolf[i])
+}
+
+# Overall normality of procrustes distances
+
+shapiro.test(Proc_distances_wolf$proc_dist)
+
+# Proc dist normalities according to ... variables
+
+# Analyst
+
+analyst<-split(Proc_distances_wolf, Proc_distances_wolf$sample)
+Proc_A1<-analyst$A1
+Proc_A2<-analyst$A2
+Proc_A3<-analyst$A3
+
+test<-Proc_A1$proc_dist
+shapiro.test(test)
+mean(test)
+median(test)
+sd(test)
+skewness(test)
+kurtosis(test, type = 1)
+mad(test, constant = 1.4826)
+sqrt(r.bw(test)$"S.xx"[1])
+
+op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
+hist(test,
+     main = "Histogram of Procrustes Distances",
+     sub = if (
+       shapiro.test(test)$`p.value` > 0.5
+       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
+         shapiro.test(test)$`p.value` > 0.05 && shapiro.test(test)$`p.value` < 0.5
+         ) {"Shapiro test: Guassian Distribution"} else if (
+           shapiro.test(test)$`p.value` > 0.001 && shapiro.test(test)$`p.value` < 0.05
+           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
+     col.sub = "red",
+     font.sub = 2,
+     col = "grey",
+     prob = TRUE,
+     xlab = "Procrustes Distances"
+     ); curve(dnorm(x,
+                    mean(test),
+                    sd(test)),
+              col = "blue",
+              lwd = 2,
+              add = TRUE); lines(density(test),
+                                 col = "red",
+                                 lwd = 2); qqPlot(test,
+                                                  envelope = 0.95, col.lines = "red",
+                                                  pch = 16, cex = 0.5,
+                                                  id = FALSE,
+                                                  main = "Procrustes Distances",
+                                                  ylab = "Actual Quantiles",
+                                                  xlab = "Theoretical Quantiles"); par(op)
+
+compare<-rbind(Proc_A3, Proc_A1)
+kruskal.test(proc_dist~sample, data = compare)
+
+par(mfrow = c(1,1))
+boxplot(proc_dist~sample, data = Proc_distances_wolf)
+
+# Dog -------------------------
+
+Proc_dist_Dog<-ShapeDist(shapes = Dog_GPA$coords, reference = mshape(Dog_GPA$coords))
+Proc_distances_Dog<-tibble(label = character(), sample = factor(), animal = factor(), proc_dist = numeric())
+for (i in 1:length(Proc_dist_Dog)) {
+  Proc_distances_Dog<-add_row(Proc_distances_Dog,
+                                label = rownames(Dog$labels)[i],
+                                sample = Dog$labels[i],
+                                animal = if_else(grepl("Wolf", label) == TRUE, "Wolf", "Dog"),
+                                proc_dist = Proc_dist_Dog[i])
+}
+
+# Overall normality of procrustes distances
+
+shapiro.test(Proc_distances_Dog$proc_dist)
+
+# Proc dist normalities according to ... variables
+
+# Analyst
+
+analyst<-split(Proc_distances_Dog, Proc_distances_Dog$sample)
+Proc_A1<-analyst$A1
+Proc_A2<-analyst$A2
+Proc_A3<-analyst$A3
+
+test<-Proc_A3$proc_dist
+shapiro.test(test)
+mean(test)
+median(test)
+sd(test)
+skewness(test)
+kurtosis(test, type = 1)
+mad(test, constant = 1.4826)
+sqrt(r.bw(test)$"S.xx"[1])
+
+op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
+hist(test,
+     main = "Histogram of Procrustes Distances",
+     sub = if (
+       shapiro.test(test)$`p.value` > 0.5
+       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
+         shapiro.test(test)$`p.value` > 0.05 && shapiro.test(test)$`p.value` < 0.5
+         ) {"Shapiro test: Guassian Distribution"} else if (
+           shapiro.test(test)$`p.value` > 0.001 && shapiro.test(test)$`p.value` < 0.05
+           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
+     col.sub = "red",
+     font.sub = 2,
+     col = "grey",
+     prob = TRUE,
+     xlab = "Procrustes Distances"
+     ); curve(dnorm(x,
+                    mean(test),
+                    sd(test)),
+              col = "blue",
+              lwd = 2,
+              add = TRUE); lines(density(test),
+                                 col = "red",
+                                 lwd = 2); qqPlot(test,
+                                                  envelope = 0.95, col.lines = "red",
+                                                  pch = 16, cex = 0.5,
+                                                  id = FALSE,
+                                                  main = "Procrustes Distances",
+                                                  ylab = "Actual Quantiles",
+                                                  xlab = "Theoretical Quantiles"); par(op)
+
+compare<-rbind(Proc_A1, Proc_A2)
+kruskal.test(proc_dist~sample, data = compare)
+
+par(mfrow = c(1,1))
+boxplot(proc_dist~sample, data = Proc_distances_Dog)
+
 # Absolute Error Calculations and Distributions -------------------
+
+# As noted by Cramon and Taubadel, these analyses are much more susceptible to error and are not a true representation of error.
+# Revised version of "Raw Error" code now includes a more reliable calculation of landmark error - 07/07/2020
+
 # A1 -----------------------------------
 
 # Error distance calculations
@@ -1513,424 +1937,3 @@ for (i in 1:length(levels(interanalyst_errors$Landmark))){
 }; rm(interanalyst_landmark_error); interanalyst_landmark_errors
 
 #
-
-# Distribution Analysis ----------------------------------------
-
-# Create plots of distributions
-
-Landmark<-split(data, data$Landmark)
-for (i in 1:length(levels(data$Landmark))){
-  LM_number<-paste("LM", i, sep ="")
-  Landmark_dist<-Landmark[[LM_number]]
-  landmark_plot<-ggplot(Landmark_dist, aes(x = x, y = y, colour = Sample)) +
-    geom_point(stat = "identity", size = 1.5) +
-    stat_ellipse(size = 0.5) +
-    scale_color_manual(values = c("A3" = "BA3k", "A1" = "Red", "A2" = "Blue")) +
-    theme(
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      panel.background = element_rect(fill = "transparent"),
-      plot.background = element_rect(fill = "transparent", colour = "NA"),
-      plot.margin = unit(c(1,1,1,1), "cm"),
-      plot.title = element_blank(),
-      plot.subtitle = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.x = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.ticks.y = element_blank(),
-      panel.border = element_rect(colour = "NA", fill = "transparent"),
-      legend.position = "none"
-    ) +
-    coord_cartesian(xlim = c(min(data$x)-0.01, max(data$x)+0.01),
-                    ylim = c(min(data$y)-0.01, max(data$y)+0.01))
-  ggsave(paste(directory, "\\Plots of Distributions\\",
-               LM_number, ".svg", sep = ""), plot = landmark_plot,
-         device = "svg",
-         width = 50,
-         height = 50,
-         units = "cm",
-         dpi = 1000,
-         bg = "transparent")
-}
-
-# Calculate Significance of Variations in Distribution
-
-LM_number<-"LM17"
-Landmark_dist<-Landmark[[LM_number]]; Landmark_dist_coords<-as.matrix(as.tibble(Landmark_dist) %>% select(x, y, z))
-pairwise.perm.manova(Landmark_dist_coords, Landmark_dist$Sample,
-                     test = c("Wilks"), nperm = 999,
-                     progress = TRUE, p.method = "none")
-
-# Animal
-
-# Wolf
-
-Landmark<-split(Wolf_data, Wolf_data$Landmark)
-for (i in 1:length(levels(Wolf_data$Landmark))){
-  LM_number<-paste("LM", i, sep ="")
-  Landmark_dist<-Landmark[[LM_number]]
-  landmark_plot<-ggplot(Landmark_dist, aes(x = x, y = y, colour = Sample)) +
-    geom_point(stat = "identity", size = 1.5) +
-    stat_ellipse(size = 0.5) +
-    scale_color_manual(values = c("A3" = "BA3k", "A1" = "Red", "A2" = "Blue")) +
-    theme(
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      panel.background = element_rect(fill = "transparent"),
-      plot.background = element_rect(fill = "transparent", colour = "NA"),
-      plot.margin = unit(c(1,1,1,1), "cm"),
-      plot.title = element_blank(),
-      plot.subtitle = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.x = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.ticks.y = element_blank(),
-      panel.border = element_rect(colour = "NA", fill = "transparent"),
-      legend.position = "none"
-    ) +
-    coord_cartesian(xlim = c(min(Wolf_data$x)-0.01, max(Wolf_data$x)+0.01),
-                    ylim = c(min(Wolf_data$y)-0.01, max(Wolf_data$y)+0.01))
-  ggsave(paste(directory, "\\Plots of Distributions\\",
-               LM_number, ".svg", sep = ""), plot = landmark_plot,
-         device = "svg",
-         width = 50,
-         height = 50,
-         units = "cm",
-         dpi = 1000,
-         bg = "transparent")
-}
-
-# Multivariate Analyses
-
-LM_number<-"LM17"
-Landmark_dist<-Landmark[[LM_number]]; Landmark_dist_coords<-as.matrix(as.tibble(Landmark_dist) %>% select(x, y, z))
-pairwise.perm.manova(Landmark_dist_coords, Landmark_dist$Sample,
-                     test = c("Wilks"), nperm = 999,
-                     progress = TRUE, p.method = "none")
-
-# Dog
-
-Landmark<-split(Dog_data, Dog_data$Landmark)
-for (i in 1:length(levels(Dog_data$Landmark))){
-  LM_number<-paste("LM", i, sep ="")
-  Landmark_dist<-Landmark[[LM_number]]
-  landmark_plot<-ggplot(Landmark_dist, aes(x = x, y = y, colour = Sample)) +
-    geom_point(stat = "identity", size = 1.5) +
-    stat_ellipse(size = 0.5) +
-    scale_color_manual(values = c("A3" = "BA3k", "A1" = "Red", "A2" = "Blue")) +
-    theme(
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      panel.background = element_rect(fill = "transparent"),
-      plot.background = element_rect(fill = "transparent", colour = "NA"),
-      plot.margin = unit(c(1,1,1,1), "cm"),
-      plot.title = element_blank(),
-      plot.subtitle = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.x = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.ticks.y = element_blank(),
-      panel.border = element_rect(colour = "NA", fill = "transparent"),
-      legend.position = "none"
-    ) +
-    coord_cartesian(xlim = c(min(Dog_data$x)-0.01, max(Dog_data$x)+0.01),
-                    ylim = c(min(Dog_data$y)-0.01, max(Dog_data$y)+0.01))
-  ggsave(paste(directory, "\\Plots of Distributions\\",
-               LM_number, ".svg", sep = ""), plot = landmark_plot,
-         device = "svg",
-         width = 50,
-         height = 50,
-         units = "cm",
-         dpi = 1000,
-         bg = "transparent")
-}
-
-# Multivariate Analyses
-
-LM_number<-"LM17"
-Landmark_dist<-Landmark[[LM_number]]; Landmark_dist_coords<-as.matrix(as.tibble(Landmark_dist) %>% select(x, y, z))
-pairwise.perm.manova(Landmark_dist_coords, Landmark_dist$Sample,
-                     test = c("Wilks"), nperm = 999,
-                     progress = TRUE, p.method = "none")
-
-#
-
-# Procrustes Distances ##########################
-
-# Analyst -----------------------------------
-
-Proc_dist<-ShapeDist(shapes = GPA$coords, reference = mshape(GPA$coords))
-Proc_distances<-tibble(label = character(), sample = factor(), animal = factor(), proc_dist = numeric())
-for (i in 1:length(Proc_dist)) {
-  Proc_distances<-add_row(Proc_distances,
-                          label = rownames(a$labels)[i],
-                          sample = a$labels[i],
-                          animal = if_else(grepl("Wolf", label) == TRUE, "Wolf", "Dog"),
-                          proc_dist = Proc_dist[i])
-  }
-
-# Overall normality of procrustes distances
-
-op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
-hist(Proc_distances$proc_dist,
-     main = "Histogram of Procrustes Distances",
-     sub = if (
-       shapiro.test(Proc_distances$proc_dist)$`p.value` > 0.5
-       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
-         shapiro.test(Proc_distances$proc_dist)$`p.value` > 0.05 && shapiro.test(Proc_distances$proc_dist)$`p.value` < 0.5
-         ) {"Shapiro test: Guassian Distribution"} else if (
-           shapiro.test(Proc_distances$proc_dist)$`p.value` > 0.001 && shapiro.test(Proc_distances$proc_dist)$`p.value` < 0.05
-           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
-     col.sub = "red",
-     font.sub = 2,
-     col = "grey",
-     prob = TRUE,
-     xlab = "Procrustes Distances"
-     ); curve(dnorm(x,
-                    mean(Proc_distances$proc_dist),
-                    sd(Proc_distances$proc_dist)),
-              col = "blue",
-              lwd = 2,
-              add = TRUE); lines(density(Proc_distances$proc_dist),
-                                 col = "red",
-                                 lwd = 2); qqPlot(Proc_distances$proc_dist,
-                                                  envelope = 0.95, col.lines = "red",
-                                                  pch = 16, cex = 0.5,
-                                                  id = FALSE,
-                                                  main = "Procrustes Distances",
-                                                  ylab = "Actual Quantiles",
-                                                  xlab = "Theoretical Quantiles")
-
-par(op)
-shapiro.test(Proc_distances$proc_dist)
-
-# Proc dist normalities according to ... variables
-
-analyst<-split(Proc_distances, Proc_distances$sample)
-Proc_A1<-analyst$A1
-Proc_A2<-analyst$A2
-Proc_A3<-analyst$A3
-
-test<-Proc_A2$proc_dist
-shapiro.test(test)
-mean(test)
-median(test)
-sd(test)
-skewness(test)
-kurtosis(test, type = 1)
-mad(test, constant = 1.4826)
-sqrt(r.bw(test)$"S.xx"[1])
-
-op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
-hist(test,
-     main = "Histogram of Procrustes Distances",
-     sub = if (
-       shapiro.test(test)$`p.value` > 0.5
-       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
-         shapiro.test(test)$`p.value` > 0.05 && shapiro.test(test)$`p.value` < 0.5
-         ) {"Shapiro test: Guassian Distribution"} else if (
-           shapiro.test(test)$`p.value` > 0.001 && shapiro.test(test)$`p.value` < 0.05
-           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
-     col.sub = "red",
-     font.sub = 2,
-     col = "grey",
-     prob = TRUE,
-     xlab = "Procrustes Distances"
-     ); curve(dnorm(x,
-                    mean(test),
-                    sd(test)),
-              col = "blue",
-              lwd = 2,
-              add = TRUE); lines(density(test),
-                                 col = "red",
-                                 lwd = 2); qqPlot(test,
-                                                  envelope = 0.95, col.lines = "red",
-                                                  pch = 16, cex = 0.5,
-                                                  id = FALSE,
-                                                  main = "Procrustes Distances",
-                                                  ylab = "Actual Quantiles",
-                                                  xlab = "Theoretical Quantiles")
-par(op)
-
-compare<-rbind(Proc_A2, Proc_A3)
-kruskal.test(proc_dist~sample, data = compare)
-
-distances_for_plot<-tibble(label = Proc_distances$label, distance = Proc_distances$proc_dist) %>%
-  as.data.frame(); rownames(distances_for_plot)<-distances_for_plot$label; distances_for_plot<-distances_for_plot[-c(1)]
-agn<-agnes(distances_for_plot, method = "average")
-plot(agn, which.plot = 2, cex = 0.65, main = "UPGMA Tree")
-
-boxplot(proc_dist~sample*animal, data = Proc_distances, col =  c("red","blue","green"))
-
-op<-par(mfrow = c(1,2))
-boxplot(proc_dist~animal, data = Proc_distances); boxplot(proc_dist~sample, data = Proc_distances)
-par(op)
-
-# Repeatability measure - proportion of variance due to true variation
-
-((sum(as.matrix(tibble(s2a = Proc_A1$proc_dist^2))))/
-    (nrow(Proc_distances)-length(levels(Proc_distances$sample))))/
-  ((sum(as.matrix(tibble(s2a = Proc_distances$proc_dist^2))))/
-     (nrow(Proc_distances)-1))*100
-
-((sum(as.matrix(tibble(s2a = Proc_A2$proc_dist^2))))/
-    (nrow(Proc_distances)-length(levels(Proc_distances$sample))))/
-  ((sum(as.matrix(tibble(s2a = Proc_distances$proc_dist^2))))/
-     (nrow(Proc_distances)-1))*100
-
-((sum(as.matrix(tibble(s2a = Proc_A3$proc_dist^2))))/
-    (nrow(Proc_distances)-length(levels(Proc_distances$sample))))/
-  ((sum(as.matrix(tibble(s2a = Proc_distances$proc_dist^2))))/
-     (nrow(Proc_distances)-1))*100
-
-
-#
-
-# Only with wolves ---------------------------
-
-Proc_dist_wolf<-ShapeDist(shapes = Wolf_GPA$coords, reference = mshape(Wolf_GPA$coords))
-Proc_distances_wolf<-tibble(label = character(), sample = factor(), animal = factor(), proc_dist = numeric())
-for (i in 1:length(Proc_dist_wolf)) {
-  Proc_distances_wolf<-add_row(Proc_distances_wolf,
-                               label = rownames(Wolf$labels)[i],
-                               sample = Wolf$labels[i],
-                               animal = if_else(grepl("Wolf", label) == TRUE, "Wolf", "Dog"),
-                               proc_dist = Proc_dist_wolf[i])
-}
-
-# Overall normality of procrustes distances
-
-shapiro.test(Proc_distances_wolf$proc_dist)
-
-# Proc dist normalities according to ... variables
-
-# Analyst
-
-analyst<-split(Proc_distances_wolf, Proc_distances_wolf$sample)
-Proc_A1<-analyst$A1
-Proc_A2<-analyst$A2
-Proc_A3<-analyst$A3
-
-test<-Proc_A1$proc_dist
-shapiro.test(test)
-mean(test)
-median(test)
-sd(test)
-skewness(test)
-kurtosis(test, type = 1)
-mad(test, constant = 1.4826)
-sqrt(r.bw(test)$"S.xx"[1])
-
-op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
-hist(test,
-     main = "Histogram of Procrustes Distances",
-     sub = if (
-       shapiro.test(test)$`p.value` > 0.5
-       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
-         shapiro.test(test)$`p.value` > 0.05 && shapiro.test(test)$`p.value` < 0.5
-         ) {"Shapiro test: Guassian Distribution"} else if (
-           shapiro.test(test)$`p.value` > 0.001 && shapiro.test(test)$`p.value` < 0.05
-           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
-     col.sub = "red",
-     font.sub = 2,
-     col = "grey",
-     prob = TRUE,
-     xlab = "Procrustes Distances"
-     ); curve(dnorm(x,
-                    mean(test),
-                    sd(test)),
-              col = "blue",
-              lwd = 2,
-              add = TRUE); lines(density(test),
-                                 col = "red",
-                                 lwd = 2); qqPlot(test,
-                                                  envelope = 0.95, col.lines = "red",
-                                                  pch = 16, cex = 0.5,
-                                                  id = FALSE,
-                                                  main = "Procrustes Distances",
-                                                  ylab = "Actual Quantiles",
-                                                  xlab = "Theoretical Quantiles"); par(op)
-
-compare<-rbind(Proc_A3, Proc_A1)
-kruskal.test(proc_dist~sample, data = compare)
-
-par(mfrow = c(1,1))
-boxplot(proc_dist~sample, data = Proc_distances_wolf)
-
-# Dog -------------------------
-
-Proc_dist_Dog<-ShapeDist(shapes = Dog_GPA$coords, reference = mshape(Dog_GPA$coords))
-Proc_distances_Dog<-tibble(label = character(), sample = factor(), animal = factor(), proc_dist = numeric())
-for (i in 1:length(Proc_dist_Dog)) {
-  Proc_distances_Dog<-add_row(Proc_distances_Dog,
-                                label = rownames(Dog$labels)[i],
-                                sample = Dog$labels[i],
-                                animal = if_else(grepl("Wolf", label) == TRUE, "Wolf", "Dog"),
-                                proc_dist = Proc_dist_Dog[i])
-}
-
-# Overall normality of procrustes distances
-
-shapiro.test(Proc_distances_Dog$proc_dist)
-
-# Proc dist normalities according to ... variables
-
-# Analyst
-
-analyst<-split(Proc_distances_Dog, Proc_distances_Dog$sample)
-Proc_A1<-analyst$A1
-Proc_A2<-analyst$A2
-Proc_A3<-analyst$A3
-
-test<-Proc_A3$proc_dist
-shapiro.test(test)
-mean(test)
-median(test)
-sd(test)
-skewness(test)
-kurtosis(test, type = 1)
-mad(test, constant = 1.4826)
-sqrt(r.bw(test)$"S.xx"[1])
-
-op<-par(mfrow = c(1,2)) # mar = bottom, left, top, right
-hist(test,
-     main = "Histogram of Procrustes Distances",
-     sub = if (
-       shapiro.test(test)$`p.value` > 0.5
-       ) {"Shapiro test: Significant Gaussian Distribution"} else if (
-         shapiro.test(test)$`p.value` > 0.05 && shapiro.test(test)$`p.value` < 0.5
-         ) {"Shapiro test: Guassian Distribution"} else if (
-           shapiro.test(test)$`p.value` > 0.001 && shapiro.test(test)$`p.value` < 0.05
-           ) {"Shapiro test: Non-Gaussian Distribution"} else {"Shapiro test: V. Significant Non-Gaussian Distribution"},
-     col.sub = "red",
-     font.sub = 2,
-     col = "grey",
-     prob = TRUE,
-     xlab = "Procrustes Distances"
-     ); curve(dnorm(x,
-                    mean(test),
-                    sd(test)),
-              col = "blue",
-              lwd = 2,
-              add = TRUE); lines(density(test),
-                                 col = "red",
-                                 lwd = 2); qqPlot(test,
-                                                  envelope = 0.95, col.lines = "red",
-                                                  pch = 16, cex = 0.5,
-                                                  id = FALSE,
-                                                  main = "Procrustes Distances",
-                                                  ylab = "Actual Quantiles",
-                                                  xlab = "Theoretical Quantiles"); par(op)
-
-compare<-rbind(Proc_A1, Proc_A2)
-kruskal.test(proc_dist~sample, data = compare)
-
-par(mfrow = c(1,1))
-boxplot(proc_dist~sample, data = Proc_distances_Dog)
-
