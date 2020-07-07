@@ -63,7 +63,13 @@ distances<-as.tibble(distances) %>%
   mutate(
     A1_A3 = sqrt(((A1_x-A3_x)^2)+((A1_y-A3_y)^2)+((A1_y-A3_y)^2)),
     A1_A2 = sqrt(((A1_x-A2_x)^2)+((A1_y-A2_y)^2)+((A1_y-A2_y)^2)),
-    A3_A2 = sqrt(((A3_x-A2_x)^2)+((A3_y-A2_y)^2)+((A3_y-A2_y)^2))
+    A3_A2 = sqrt(((A3_x-A2_x)^2)+((A3_y-A2_y)^2)+((A3_y-A2_y)^2)),
+    c_x = ((A1_x + A2_x + A3_x)/3),
+    c_y = ((A1_y + A2_y + A3_y)/3),
+    c_z = ((A1_z + A2_z + A3_z)/3),
+    A1 = sqrt(((A1_x-c_x)^2)+((A1_y-c_y)^2)+((A1_z-c_z)^2)),
+    A2 = sqrt(((A2_x-c_x)^2)+((A2_y-c_y)^2)+((A2_z-c_z)^2)),
+    A3 = sqrt(((A3_x-c_x)^2)+((A3_y-c_y)^2)+((A3_z-c_z)^2))
   )
 
 ind_split<-split(distances, distances$label)
@@ -76,16 +82,17 @@ for (i in 1:length(ind_split)) {print(shapiro.test(as.matrix(ind_split[[i]][,13:
 
 # Overall errors per individual studied
 ind_error<-tibble(label = character(), Animal = factor(),
-                  A1_A3 = numeric (), A1_A2 = numeric(), A3_A2 = numeric())
+                  bw_A1_A3 = numeric (), bw_A1_A2 = numeric(), bw_A3_A2 = numeric(),
+                  m_A1_A3 = numeric (), m_A1_A2 = numeric(), m_A3_A2 = numeric())
 for (i in 1:length(ind_split)) {
   ind_error<-add_row(ind_error, label = ind_split[[i]]$label[1],
                      Animal = ind_split[[i]]$Animal[1],
-                     #A1_A3 = sqrt(r.bw(as.matrix(ind_split[[i]][,13]))$"S.xx"[1]),
-                     #A1_A2 = sqrt(r.bw(as.matrix(ind_split[[i]][,14]))$"S.xx"[1]),
-                     #A3_A2 = sqrt(r.bw(as.matrix(ind_split[[i]][,15]))$"S.xx"[1]))
-                     A1_A3 = median(as.matrix(ind_split[[i]][,13])),
-                     A1_A2 = median(as.matrix(ind_split[[i]][,14])),
-                     A3_A2 = median(as.matrix(ind_split[[i]][,15]))
+                     bw_A1_A3 = sqrt(r.bw(as.matrix(ind_split[[i]][,13]))$"S.xx"[1]),
+                     bw_A1_A2 = sqrt(r.bw(as.matrix(ind_split[[i]][,14]))$"S.xx"[1]),
+                     bw_A3_A2 = sqrt(r.bw(as.matrix(ind_split[[i]][,15]))$"S.xx"[1]))
+                     m_A1_A3 = median(as.matrix(ind_split[[i]][,13])),
+                     m_A1_A2 = median(as.matrix(ind_split[[i]][,14])),
+                     m_A3_A2 = median(as.matrix(ind_split[[i]][,15]))
                      )
 }
 
@@ -208,3 +215,78 @@ for (i in 1:length(lm_error_split)) {
                     A1_A2 = sqrt(r.bw(as.matrix(lm_error_split[[i]][,14]))$"S.xx"[1]),
                     A3_A2 = sqrt(r.bw(as.matrix(lm_error_split[[i]][,15]))$"S.xx"[1]))
 }
+
+# Inter- and Intra Variability - calculate distance of landmark to centroid in raw space --------------
+
+lm_split<-split(distances, distances$Landmark)
+lm_error<-tibble(LM = factor(), Absolute = numeric(),
+                 A1 = numeric(), A2 = numeric(), A3 = numeric())
+for(i in 1:length(lm_split)){
+  lm_error<-add_row(lm_error, LM = lm_split[[i]]$Landmark[1],
+                    Absolute = median(as.matrix(lm_split[[i]][,19:21])),
+                    A1 = median(as.matrix(lm_split[[i]][,19])),
+                    A2 = median(as.matrix(lm_split[[i]][,20])),
+                    A3 = median(as.matrix(lm_split[[i]][,21]))
+                    )
+}; lm_error
+
+lm_error<-tibble(LM = factor(), Absolute = numeric(),
+                 A1 = numeric(), A2 = numeric(), A3 = numeric())
+for(i in 1:length(lm_split)){
+  lm_error<-add_row(lm_error, LM = lm_split[[i]]$Landmark[1],
+                    Absolute = sqrt(r.bw(as.matrix(lm_split[[i]][,19:21]))$"S.xx"[1]),
+                    A1 = sqrt(r.bw(as.matrix(lm_split[[i]][,19]))$"S.xx"[1]),
+                    A2 = sqrt(r.bw(as.matrix(lm_split[[i]][,20]))$"S.xx"[1]),
+                    A3 = sqrt(r.bw(as.matrix(lm_split[[i]][,21]))$"S.xx"[1])
+  )
+}; lm_error
+
+lm_error<-tibble(LM = factor(), Absolute = numeric(),
+                 A1 = numeric(), A2 = numeric(), A3 = numeric())
+for(i in 1:length(lm_split)){
+  lm_error<-add_row(lm_error, LM = lm_split[[i]]$Landmark[1],
+                    Absolute = mad(as.matrix(lm_split[[i]][,19:21]), constant = 1.4826),
+                    A1 = mad(as.matrix(lm_split[[i]][,19]), constant = 1.4826),
+                    A2 = mad(as.matrix(lm_split[[i]][,20]), constant = 1.4826),
+                    A3 =mad(as.matrix(lm_split[[i]][,21]), constant = 1.4826)
+  )
+}; lm_error
+
+# according to the animal
+
+animal_split<-split(distances, distances$Animal)
+target<-animal_split[["Dog"]]
+
+lm_split<-split(target, target$Landmark)
+lm_error<-tibble(LM = factor(), Absolute = numeric(),
+                 A1 = numeric(), A2 = numeric(), A3 = numeric())
+for(i in 1:length(lm_split)){
+  lm_error<-add_row(lm_error, LM = lm_split[[i]]$Landmark[1],
+                    Absolute = median(as.matrix(lm_split[[i]][,19:21])),
+                    A1 = median(as.matrix(lm_split[[i]][,19])),
+                    A2 = median(as.matrix(lm_split[[i]][,20])),
+                    A3 = median(as.matrix(lm_split[[i]][,21]))
+  )
+}; lm_error
+
+lm_error<-tibble(LM = factor(), Absolute = numeric(),
+                 A1 = numeric(), A2 = numeric(), A3 = numeric())
+for(i in 1:length(lm_split)){
+  lm_error<-add_row(lm_error, LM = lm_split[[i]]$Landmark[1],
+                    Absolute = sqrt(r.bw(as.matrix(lm_split[[i]][,19:21]))$"S.xx"[1]),
+                    A1 = sqrt(r.bw(as.matrix(lm_split[[i]][,19]))$"S.xx"[1]),
+                    A2 = sqrt(r.bw(as.matrix(lm_split[[i]][,20]))$"S.xx"[1]),
+                    A3 = sqrt(r.bw(as.matrix(lm_split[[i]][,21]))$"S.xx"[1])
+  )
+}; lm_error
+
+lm_error<-tibble(LM = factor(), Absolute = numeric(),
+                 A1 = numeric(), A2 = numeric(), A3 = numeric())
+for(i in 1:length(lm_split)){
+  lm_error<-add_row(lm_error, LM = lm_split[[i]]$Landmark[1],
+                    Absolute = mad(as.matrix(lm_split[[i]][,19:21]), constant = 1.4826),
+                    A1 = mad(as.matrix(lm_split[[i]][,19]), constant = 1.4826),
+                    A2 = mad(as.matrix(lm_split[[i]][,20]), constant = 1.4826),
+                    A3 =mad(as.matrix(lm_split[[i]][,21]), constant = 1.4826)
+  )
+}; lm_error
